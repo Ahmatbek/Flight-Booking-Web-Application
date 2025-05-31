@@ -3,6 +3,8 @@ package kg.attractor.projects.controlwork9.controller;
 import jakarta.validation.Valid;
 import kg.attractor.projects.controlwork9.dto.UserDto;
 import kg.attractor.projects.controlwork9.service.CompanyService;
+import kg.attractor.projects.controlwork9.service.FlightService;
+import kg.attractor.projects.controlwork9.service.TicketService;
 import kg.attractor.projects.controlwork9.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
     private final CompanyService companyService;
     private final UserService userService;
-//    private final CompanyMapper companyMapper;
     private final PasswordEncoder passwordEncoder;
+    private final TicketService ticketService;
+    private final FlightService flightService;
 
     @GetMapping("/create")
     public String index(Model model) {
@@ -57,5 +60,18 @@ public class AdminController {
     , @PathVariable long id){
         companyService.unfreeze(id);
         return "redirect:/admin/companies";
+    }
+
+    @GetMapping("/tickets/{id}")
+    public String ticket(@PathVariable Long id, Model model) {
+        model.addAttribute("tickets", ticketService.getTicketsByFlightId(id));
+        return "ticket/show";
+    }
+
+    @GetMapping("/flights/{id}")
+    public String flight(@PathVariable Long id,
+                         Model model) {
+        model.addAttribute("flights", flightService.findByCompanyId(id));
+        return "flight/show";
     }
 }

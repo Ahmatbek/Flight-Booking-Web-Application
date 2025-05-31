@@ -30,6 +30,7 @@ public class TicketMapper {
 //                .user(ticket.getUser() != null ? userService.findUserById(ticket.getUser().getId()) : null)
                 .flight(flightService.findById(ticket.getFlight().getId()))
                 .ticketClass(ticket.getTicketClass().getName())
+                .seatNumber(ticket.getSeatNumber())
                 .build();
     }
     public Ticket toEntity(TicketDto ticketDto) {

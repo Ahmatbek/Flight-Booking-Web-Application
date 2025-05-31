@@ -28,4 +28,5 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     );
 
     Optional<Flight> findByNumber(String number);
+    List<Flight> findAllByCompanyId(long companyId);
 } 

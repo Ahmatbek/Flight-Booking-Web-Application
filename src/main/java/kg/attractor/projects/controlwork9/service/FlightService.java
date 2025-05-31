@@ -12,4 +12,6 @@ public interface FlightService {
     long createFlight(FlightDto flightDto);
 
     Boolean checkNumberInDB(String email);
+
+    List<FlightDto> findByUserId(Long userId);
 }

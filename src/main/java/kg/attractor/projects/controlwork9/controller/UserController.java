@@ -5,6 +5,7 @@ import kg.attractor.projects.controlwork9.dto.BookingDto;
 import kg.attractor.projects.controlwork9.dto.UserDto;
 import kg.attractor.projects.controlwork9.repository.BookingRepository;
 import kg.attractor.projects.controlwork9.service.AuthorizedUserService;
+import kg.attractor.projects.controlwork9.service.FlightService;
 import kg.attractor.projects.controlwork9.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserController {
     private final UserService userService;
     private final AuthorizedUserService authorizedUserService;
+    private final FlightService flightService;
 
     private final BookingRepository bookingRepository;
     @PostMapping("/register")
@@ -43,7 +45,8 @@ public class UserController {
     ) {
 
         model.addAttribute("user", authorizedUserService.getAuthorizedUserDetails());
-        model.addAttribute("bookings",bookingRepository.findAllByUserId(authorizedUserService.getAuthorizedUserDetails().getId()) );
+        model.addAttribute("bookings",bookingRepository.findAllByUserId(authorizedUserService.getAuthorizedUserDetails().getId()));
+        model.addAttribute("flights", flightService.findByUserId(authorizedUserService.getAuthorizedUserDetails().getId()));
 
         return "profile/profile";
     }

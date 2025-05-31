@@ -73,6 +73,14 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.findByNumber(email).isPresent();
     }
 
+    @Override
+    public List<FlightDto> findByUserId(Long userId) {
+        return flightRepository.findAllByCompanyId(userId)
+                .stream()
+                .map(flightMapper::toDto)
+                .toList();
+    }
+
     private FlightDto flightDto(SearchDto searchDto) {
         return FlightDto.builder()
                 .fromCity(searchDto.getFromCity())
