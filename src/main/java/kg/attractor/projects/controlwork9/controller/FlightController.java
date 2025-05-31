@@ -1,6 +1,7 @@
 package kg.attractor.projects.controlwork9.controller;
 
 import jakarta.validation.Valid;
+import kg.attractor.projects.controlwork9.dto.FlightDto;
 import kg.attractor.projects.controlwork9.dto.SearchDto;
 import kg.attractor.projects.controlwork9.model.Flight;
 import kg.attractor.projects.controlwork9.service.FlightService;
@@ -12,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -26,13 +29,14 @@ public class FlightController {
         return "search/search";
     }
     @PostMapping("/flights/search")
-    public String search(@Valid SearchDto user,
+    public String search(@Valid SearchDto searchDto,
                          BindingResult bindingResult,
                          Model model) {
         if(!bindingResult.hasErrors()) {
-            model.addAttribute("tickets",ticketService.getFreeTickets(flightService.showTickets(user)));
+            List<FlightDto> flights = flightService.showTickets(searchDto);
+            model.addAttribute("tickets", ticketService.getFreeTickets(flights, searchDto.getTicketClass()));
         }
-        model.addAttribute("searchDto", user);
+        model.addAttribute("searchDto", searchDto);
         return "search/search";
     }
 }

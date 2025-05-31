@@ -27,11 +27,10 @@ public class TicketMapper {
                 .id(ticket.getId())
                 .price(ticket.getPrice())
                 .booked(ticket.isBooked())
-                .user(userService.findUserById(ticket.getUser().getId()))
+//                .user(ticket.getUser() != null ? userService.findUserById(ticket.getUser().getId()) : null)
                 .flight(flightService.findById(ticket.getFlight().getId()))
                 .ticketClass(ticket.getTicketClass().getName())
                 .build();
-
     }
     public Ticket toEntity(TicketDto ticketDto) {
         TicketClass ticketsClass = ticketClassRepository.findByName(ticketDto.getTicketClass()).orElseThrow(()-> new NoSuchElementException("no such class"));

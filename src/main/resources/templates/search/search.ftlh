@@ -156,8 +156,8 @@
     <div class="search-group">
         <label for="ticketsClass">Passengers / Class</label>
         <select id="ticketsClass" name="ticketClass">
-            <option value="ECONOMY">Economy</option>
-            <option value="BUSINESS">Business</option>
+            <option value="Economy">Economy</option>
+            <option value="Business">Business</option>
         </select>
     </div>
 

@@ -51,11 +51,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketDto> getFreeTickets(List<FlightDto> flights) {
+    public List<TicketDto> getFreeTickets(List<FlightDto> flights, String ticketType) {
         List<TicketDto> freeTickets = new ArrayList<>();
-
+        TicketClassDto ticketClass = ticketClassService.findByName(ticketType);
         for (FlightDto flight : flights) {
-            List<Ticket> tickets = ticketRepository.findByFlightIdAndBookedFalse(flight.getId());
+            List<Ticket> tickets = ticketRepository.findByFlightIdAndBookedFalseAndTicketClassId(flight.getId(), ticketClass.getId());
             for (Ticket ticket : tickets) {
                 freeTickets.add(ticketMapper.toDto(ticket));
             }

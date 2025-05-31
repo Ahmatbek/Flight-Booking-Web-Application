@@ -10,7 +10,7 @@ public interface TicketService {
 
     boolean isAllowableToFreeze(long id, List<FlightDto> flights);
 
-    List<TicketDto> getFreeTickets(List<FlightDto> flights);
+    List<TicketDto> getFreeTickets(List<FlightDto> flights, String ticketType);
 
     void buy(long id);
 
