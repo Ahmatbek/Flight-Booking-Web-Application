@@ -1,0 +1,19 @@
+databaseChangeLog:
+- changeSet:
+    id: 7
+    author: Akhmatbek
+    changes:
+      - addColumn:
+          tableName: tickets
+          columns:
+            - column:
+                name: user_id
+                type: BIGINT
+                constraints:
+                  nullable: true
+      - addForeignKeyConstraint:
+          baseTableName: tickets
+          baseColumnNames: user_id
+          referencedTableName: users
+          referencedColumnNames: id
+          constraintName: fk_ticket_user

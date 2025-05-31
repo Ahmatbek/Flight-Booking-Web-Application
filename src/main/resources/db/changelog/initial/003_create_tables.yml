@@ -1,0 +1,163 @@
+databaseChangeLog:
+- changeSet:
+    id: 2
+    author: Akhmatbek
+    changes:
+      - createTable:
+          tableName: companies
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: name
+                type: VARCHAR(255)
+            - column:
+                name: email
+                type: VARCHAR(255)
+            - column:
+                name: password
+                type: VARCHAR(255)
+            - column:
+                name: logo
+                type: VARCHAR(255)
+            - column:
+                name: active
+                type: BOOLEAN
+                defaultValueBoolean: false
+
+- changeSet:
+    id: 3
+    author: Akhmatbek
+    changes:
+      - createTable:
+          tableName: tickets_class
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: name
+                type: VARCHAR(50)
+                constraints:
+                  nullable: false
+                  unique: true
+
+- changeSet:
+    id: 4
+    author: Akhmatbek
+    changes:
+      - createTable:
+          tableName: flights
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: number
+                type: VARCHAR(20)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: from_city
+                type: VARCHAR(255)
+            - column:
+                name: to_city
+                type: VARCHAR(255)
+            - column:
+                name: departure_time
+                type: TIMESTAMP
+            - column:
+                name: arrival_time
+                type: TIMESTAMP
+            - column:
+                name: company_id
+                type: BIGINT
+                constraints:
+                  foreignKeyName: fk_flight_company
+                  referencedTableName: companies
+                  referencedColumnNames: id
+                  nullable: false
+
+- changeSet:
+    id: 5
+    author: Akhmatbek
+    changes:
+      - createTable:
+          tableName: tickets
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: seat_number
+                type: VARCHAR(10)
+            - column:
+                name: price
+                type: double
+            - column:
+                name: flight_id
+                type: BIGINT
+                constraints:
+                  foreignKeyName: fk_ticket_flight
+                  referencedTableName: flights
+                  referencedColumnNames: id
+                  nullable: false
+            - column:
+                name: tickets_class_id
+                type: BIGINT
+                constraints:
+                  foreignKeyName: fk_ticketes_class
+                  referencedTableName: tickets_class
+                  referencedColumnNames: id
+                  nullable: false
+            - column:
+                name: booked
+                type: BOOLEAN
+                defaultValueBoolean: false
+
+- changeSet:
+    id: 6
+    author: Akhmatbek
+    changes:
+      - createTable:
+          tableName: bookings
+          columns:
+            - column:
+                name: id
+                type: BIGINT
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+            - column:
+                name: user_id
+                type: BIGINT
+                constraints:
+                  foreignKeyName: fk_booking_user
+                  referencedTableName: users
+                  referencedColumnNames: id
+                  nullable: false
+            - column:
+                name: ticket_id
+                type: BIGINT
+                constraints:
+                  foreignKeyName: fk_booking_ticket
+                  referencedTableName: tickets
+                  referencedColumnNames: id
+                  nullable: false
+            - column:
+                name: time
+                type: TIMESTAMP
