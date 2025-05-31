@@ -39,6 +39,6 @@ public class CompanyController {
          }
        long flightId = flightService.createFlight(flightDto);
          ticketService.createTickets(flightId);
-        return "redirect:/company/profile";
+        return "redirect:/users/profile";
     }
 }
