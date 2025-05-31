@@ -1,9 +1,12 @@
 package kg.attractor.projects.controlwork9.mapper;
 
 import kg.attractor.projects.controlwork9.dto.FlightDto;
-import kg.attractor.projects.controlwork9.model.Company;
+//import kg.attractor.projects.controlwork9.model.Company;
 import kg.attractor.projects.controlwork9.model.Flight;
+import kg.attractor.projects.controlwork9.model.User;
 import kg.attractor.projects.controlwork9.service.CompanyService;
+import kg.attractor.projects.controlwork9.service.UserService;
+import kg.attractor.projects.controlwork9.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,14 +15,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightMapper {
 
-    private CompanyService companyService;
+    private UserService userServiceImpl;
 
     @Autowired
-    public FlightMapper(@Lazy CompanyService companyService) {
-        this.companyService = companyService;
+    public FlightMapper(@Lazy UserService userService) {
+        this.userServiceImpl = userService;
     }
     public Flight toEntity(FlightDto flight) {
-        Company company = new Company();
+        User company = new User();
         company.setId(flight.getCompany().getId());
         Flight flight1 = new Flight();
         flight1.setId(flight.getId());
@@ -40,7 +43,7 @@ public class FlightMapper {
                 .departureTime(flight.getDepartureTime())
                 .toCity(flight.getToCity())
                 .fromCity(flight.getFromCity())
-                .company(companyService.getCompanyById(flight.getCompany().getId()))
+                .company(userServiceImpl.findUserById(flight.getCompany().getId()))
                 .build();
     }
 }

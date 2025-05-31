@@ -1,9 +1,7 @@
 package kg.attractor.projects.controlwork9.controller;
 
 import jakarta.validation.Valid;
-import kg.attractor.projects.controlwork9.dto.CompanyDto;
 import kg.attractor.projects.controlwork9.dto.UserDto;
-import kg.attractor.projects.controlwork9.mapper.CompanyMapper;
 import kg.attractor.projects.controlwork9.service.CompanyService;
 import kg.attractor.projects.controlwork9.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,30 +20,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
     private final CompanyService companyService;
     private final UserService userService;
-    private final CompanyMapper companyMapper;
+//    private final CompanyMapper companyMapper;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/create")
     public String index(Model model) {
-        model.addAttribute("companyDto", new CompanyDto());
+        model.addAttribute("companyDto", new UserDto());
         return "admin/create";
     }
 
     @PostMapping("/create")
-    public String register(@Valid CompanyDto userDto,
+    public String register(@Valid UserDto userDto,
                            BindingResult bindingResult,
                            Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/create";
         }else {
-            UserDto user =  new UserDto();
-            user.setAuthority("COMPANY");
-            user.setEnabled(true);
-            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            user.setName(userDto.getName());
-            user.setEmail(userDto.getEmail());
-            companyService.createCompany(userDto);
-            userService.addUser(user);
+            userService.addUser(userDto);
             return "redirect:/users/profile";
         }
     }

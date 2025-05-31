@@ -1,10 +1,3 @@
-INSERT INTO companies (name, email, password, logo, ACTIVE)
-VALUES ('Air Kyrgyzstan', 'air.kyrgyzstan@example.com', '$2a$10$UC1ygbCyrbMW.Mj6MK4EqeHZuzKuq9lH25tYsACTPQcQrlTXlno52',
-        'air_kyrgyzstan.png', true),
-       ('Manas Airlines', 'manas.airlines@example.com', '$2a$10$UC1ygbCyrbMW.Mj6MK4EqeHZuzKuq9lH25tYsACTPQcQrlTXlno52',
-        'manas_airlines.png', true),
-       ('Tez Jet', 'tez.jet@example.com', '$2a$10$UC1ygbCyrbMW.Mj6MK4EqeHZuzKuq9lH25tYsACTPQcQrlTXlno52', 'tez_jet.png',
-        true);
 
 INSERT INTO tickets_class (name)
 VALUES ('Economy'),

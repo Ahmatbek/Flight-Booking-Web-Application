@@ -1,35 +1,5 @@
 databaseChangeLog:
 - changeSet:
-    id: 2
-    author: Akhmatbek
-    changes:
-      - createTable:
-          tableName: companies
-          columns:
-            - column:
-                name: id
-                type: BIGINT
-                autoIncrement: true
-                constraints:
-                  primaryKey: true
-            - column:
-                name: name
-                type: VARCHAR(255)
-            - column:
-                name: email
-                type: VARCHAR(255)
-            - column:
-                name: password
-                type: VARCHAR(255)
-            - column:
-                name: logo
-                type: VARCHAR(255)
-            - column:
-                name: active
-                type: BOOLEAN
-                defaultValueBoolean: false
-
-- changeSet:
     id: 3
     author: Akhmatbek
     changes:
@@ -85,7 +55,7 @@ databaseChangeLog:
                 type: BIGINT
                 constraints:
                   foreignKeyName: fk_flight_company
-                  referencedTableName: companies
+                  referencedTableName: users
                   referencedColumnNames: id
                   nullable: false
 

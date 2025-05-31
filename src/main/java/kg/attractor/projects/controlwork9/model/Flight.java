@@ -37,7 +37,7 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    private User company;
 
     @OneToMany(fetch = FetchType.EAGER,  mappedBy = "flight")
     private List<Ticket> tickets;

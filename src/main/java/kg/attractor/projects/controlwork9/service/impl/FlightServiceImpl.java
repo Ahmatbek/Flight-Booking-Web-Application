@@ -2,8 +2,8 @@ package kg.attractor.projects.controlwork9.service.impl;
 
 import kg.attractor.projects.controlwork9.dto.FlightDto;
 import kg.attractor.projects.controlwork9.dto.SearchDto;
-import kg.attractor.projects.controlwork9.mapper.CompanyMapper;
 import kg.attractor.projects.controlwork9.mapper.FlightMapper;
+import kg.attractor.projects.controlwork9.mapper.UserMapper;
 import kg.attractor.projects.controlwork9.model.Flight;
 import kg.attractor.projects.controlwork9.repository.FlightRepository;
 import kg.attractor.projects.controlwork9.service.FlightService;
@@ -19,7 +19,8 @@ import java.util.NoSuchElementException;
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final FlightMapper flightMapper;
-    private final CompanyMapper companyMapper;
+//    private final CompanyMapper companyMapper;
+    private final UserMapper userMapper;
     @Override
     public FlightDto findById(long id) {
         Flight flight =  flightRepository.findById(id).orElseThrow(()-> new NoSuchElementException("NO such flight"));
@@ -52,7 +53,7 @@ public class FlightServiceImpl implements FlightService {
                         .toCity(flight.getToCity())
                         .departureTime(flight.getDepartureTime())
                         .arrivalTime(flight.getArrivalTime())
-                        .company(companyMapper.toDto(flight.getCompany()))
+                        .company(userMapper.toDto(flight.getCompany()))
                         .build())
                 .toList();
     }

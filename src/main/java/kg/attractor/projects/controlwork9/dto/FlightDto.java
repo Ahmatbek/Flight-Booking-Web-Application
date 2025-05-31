@@ -25,6 +25,6 @@ public class FlightDto {
     private LocalDateTime departureTime;
     @NotNull
     private LocalDateTime arrivalTime;
-    private CompanyDto company;
+    private UserDto company;
 }
 

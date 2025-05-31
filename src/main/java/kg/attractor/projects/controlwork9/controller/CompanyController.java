@@ -2,7 +2,6 @@ package kg.attractor.projects.controlwork9.controller;
 
 import jakarta.validation.Valid;
 import kg.attractor.projects.controlwork9.dto.FlightDto;
-import kg.attractor.projects.controlwork9.model.Company;
 import kg.attractor.projects.controlwork9.service.AuthorizedUserService;
 import kg.attractor.projects.controlwork9.service.CompanyService;
 import kg.attractor.projects.controlwork9.service.FlightService;
