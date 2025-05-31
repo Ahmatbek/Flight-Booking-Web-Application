@@ -2,15 +2,16 @@ package kg.attractor.projects.controlwork9.service.impl;
 
 import kg.attractor.projects.controlwork9.dto.FlightDto;
 import kg.attractor.projects.controlwork9.dto.SearchDto;
+import kg.attractor.projects.controlwork9.dto.UserDto;
 import kg.attractor.projects.controlwork9.mapper.FlightMapper;
 import kg.attractor.projects.controlwork9.mapper.UserMapper;
 import kg.attractor.projects.controlwork9.model.Flight;
 import kg.attractor.projects.controlwork9.repository.FlightRepository;
+import kg.attractor.projects.controlwork9.service.AuthorizedUserService;
 import kg.attractor.projects.controlwork9.service.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final FlightMapper flightMapper;
+    private final AuthorizedUserService authorizedUserService;
 //    private final CompanyMapper companyMapper;
     private final UserMapper userMapper;
     @Override
@@ -41,8 +43,8 @@ public class FlightServiceImpl implements FlightService {
         List<Flight> flights = flightRepository.findByCriteria(
                 searchCriteria.getFromCity(),
                 searchCriteria.getToCity(),
-                searchCriteria.getDepartureTime(),
-                searchCriteria.getArrivalTime()
+                searchCriteria.getDepartureTime().atStartOfDay(),
+                searchCriteria.getArrivalTime().atStartOfDay()
         );
 
         return flights.stream()
@@ -51,19 +53,32 @@ public class FlightServiceImpl implements FlightService {
                         .number(flight.getNumber())
                         .fromCity(flight.getFromCity())
                         .toCity(flight.getToCity())
-                        .departureTime(flight.getDepartureTime())
-                        .arrivalTime(flight.getArrivalTime())
+                        .departureTime(flight.getDepartureTime().toLocalDate())
+                        .arrivalTime(flight.getArrivalTime().toLocalDate())
                         .company(userMapper.toDto(flight.getCompany()))
                         .build())
                 .toList();
+    }
+
+    @Override
+    public long createFlight(FlightDto flightDto) {
+        UserDto userDto = authorizedUserService.getAuthorizedUserDetails();
+        flightDto.setCompany(userDto);
+        Flight flight = flightRepository.save(flightMapper.toEntity(flightDto));
+        return flight.getId();
+    }
+
+    @Override
+    public Boolean checkNumberInDB(String email) {
+        return flightRepository.findByNumber(email).isPresent();
     }
 
     private FlightDto flightDto(SearchDto searchDto) {
         return FlightDto.builder()
                 .fromCity(searchDto.getFromCity())
                 .toCity(searchDto.getToCity())
-                .departureTime(searchDto.getDepartureTime().atStartOfDay())
-                .arrivalTime(searchDto.getArrivalTime().atStartOfDay())
+                .departureTime(searchDto.getDepartureTime().toLocalDate())
+                .arrivalTime(searchDto.getArrivalTime().toLocalDate())
                 .build();
     }
 

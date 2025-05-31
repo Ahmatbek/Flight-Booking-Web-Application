@@ -15,4 +15,6 @@ public interface TicketService {
     void buy(long id);
 
     TicketDto getTicket(long id);
+
+    void createTickets(long flightId);
 }

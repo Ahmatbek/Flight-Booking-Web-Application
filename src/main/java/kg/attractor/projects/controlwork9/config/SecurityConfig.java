@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/users/profile").fullyAuthenticated()
+                        .requestMatchers("/company/*").hasAuthority("COMPANY")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/booking/*").hasAuthority("USER")
                         .anyRequest().permitAll());

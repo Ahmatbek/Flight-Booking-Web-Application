@@ -9,4 +9,7 @@ public interface FlightService {
     FlightDto findById(long id);
     List<FlightDto> findByCompanyId(long companyId);
     List<FlightDto> showTickets(SearchDto searchDto);
+    long createFlight(FlightDto flightDto);
+
+    Boolean checkNumberInDB(String email);
 }

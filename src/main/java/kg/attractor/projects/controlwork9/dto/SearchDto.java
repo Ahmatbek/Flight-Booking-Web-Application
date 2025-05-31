@@ -3,8 +3,9 @@ package kg.attractor.projects.controlwork9.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -19,10 +20,12 @@ public class SearchDto {
     @NotBlank(message = "Destination city is required")
     private String toCity;
     
-    @NotNull(message = "Departure date is required")
-    private LocalDate departureTime;
+    @NotNull(message = "Departure time is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime departureTime;
     @NotNull(message = "Arrival time is required")
-    private LocalDate arrivalTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime arrivalTime;
     
     @NotBlank(message = "Ticket class is required")
     private String ticketClass;

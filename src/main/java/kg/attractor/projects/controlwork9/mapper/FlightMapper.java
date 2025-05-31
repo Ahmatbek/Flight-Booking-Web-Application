@@ -24,12 +24,13 @@ public class FlightMapper {
     public Flight toEntity(FlightDto flight) {
         User company = new User();
         company.setId(flight.getCompany().getId());
+
         Flight flight1 = new Flight();
         flight1.setId(flight.getId());
         flight1.setCompany(company);
         flight1.setNumber(flight.getNumber());
-        flight1.setDepartureTime(flight.getDepartureTime());
-        flight1.setArrivalTime(flight.getArrivalTime());
+        flight1.setDepartureTime(flight.getDepartureTime().atStartOfDay());
+        flight1.setArrivalTime(flight.getArrivalTime().atStartOfDay());
         flight1.setToCity(flight.getToCity());
         flight1.setFromCity(flight.getFromCity());
         return flight1;
@@ -39,8 +40,8 @@ public class FlightMapper {
         return FlightDto.builder()
                 .id(flight.getId())
                 .number(flight.getNumber())
-                .arrivalTime(flight.getArrivalTime())
-                .departureTime(flight.getDepartureTime())
+                .arrivalTime(flight.getArrivalTime().toLocalDate())
+                .departureTime(flight.getDepartureTime().toLocalDate())
                 .toCity(flight.getToCity())
                 .fromCity(flight.getFromCity())
                 .company(userServiceImpl.findUserById(flight.getCompany().getId()))

@@ -145,14 +145,12 @@
     </div>
 
     <div class="search-group">
-        <label for="departureTime">When?</label>
-        <@spring.formInput "searchDto.departureTime" 'id="departureTime" class="form-control form-control-lg"' 'date' />
-        <@spring.showErrors "<br>" "error text-danger" />
+        <label for="departureTime">Departure Time</label>
+        <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" required>
     </div>
     <div class="search-group">
-        <label for="departureTime">When?</label>
-        <@spring.formInput "searchDto.arrivalTime" 'id="departureTime" class="form-control form-control-lg"' 'date' />
-        <@spring.showErrors "<br>" "error text-danger" />
+        <label for="arrivalTime">Arrival Time</label>
+        <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" required>
     </div>
 
     <div class="search-group">

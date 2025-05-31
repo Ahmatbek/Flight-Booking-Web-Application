@@ -48,8 +48,7 @@
                                 <@spring.formInput "userDto.password" 'id="form3Example4cg" class="form-control form-control-lg"''password' />
                                 <@spring.showErrors "<br>" "error text-danger" />
                             </div>
-                            <input type="hidden" name="userDto.authority" value="COMPANY">
-
+                            <input type="hidden" name="authority" value="COMPANY">
 
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-primary btn-block mb-4">Create Company

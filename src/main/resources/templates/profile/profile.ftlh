@@ -63,7 +63,7 @@
 
 
         <#if company??>
-            <a href="company/createFlight">Create Flight</a>
+            <a href="/company/createFlight">Create Flight</a>
         </#if>
 
 

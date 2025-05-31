@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
@@ -25,4 +26,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             @Param("departureTime") LocalDateTime departureTime,
             @Param("arrivalTime") LocalDateTime arrivalTime
     );
+
+    Optional<Flight> findByNumber(String number);
 } 

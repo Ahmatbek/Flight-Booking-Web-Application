@@ -24,7 +24,7 @@ public class TicketDto {
 
     private FlightDto flight;
 
-    private TicketClassDto ticketClass;
+    private String ticketClass;
 
     private UserDto user;
 
