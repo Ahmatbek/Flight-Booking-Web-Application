@@ -77,7 +77,6 @@
     <thead>
     <tr>
         <th>#</th>
-        <th>Logo</th>
         <th>Name</th>
         <th>Email</th>
         <th>Status</th>
@@ -88,24 +87,17 @@
     <#list companies as company>
         <tr>
             <td>${company_index + 1}</td>
-            <td>
-                <#if company.logo?? && company.logo?has_content>
-                    <img src="/uploads/logos/${company.logo}" alt="Logo" width="60" height="60">
-                <#else>
-                    <span>No Logo</span>
-                </#if>
-            </td>
             <td>${company.name}</td>
             <td>${company.email}</td>
             <td>
-                <#if company.active>
+                <#if company.enabled>
                     <span style="color: green;">Active</span>
                 <#else>
                     <span style="color: red;">Frozen</span>
                 </#if>
             </td>
             <td>
-                <#if company.active>
+                <#if company.enabled>
                     <form action="/admin/freeze/${company.id}" method="post">
                         <#if _csrf??>
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"

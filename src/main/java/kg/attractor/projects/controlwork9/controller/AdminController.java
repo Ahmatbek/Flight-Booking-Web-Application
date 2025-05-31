@@ -25,7 +25,7 @@ public class AdminController {
 
     @GetMapping("/create")
     public String index(Model model) {
-        model.addAttribute("companyDto", new UserDto());
+        model.addAttribute("userDto", new UserDto());
         return "admin/create";
     }
 

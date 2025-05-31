@@ -21,6 +21,7 @@ public class UserMapper {
                 .password(user.getPassword())
                 .authority(user.getAuthority().getName())
                 .enabled(user.getEnabled())
+                .name(user.getName())
                 .build();
     }
 

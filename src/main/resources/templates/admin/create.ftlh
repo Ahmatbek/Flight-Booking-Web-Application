@@ -33,21 +33,22 @@
                             </#if>
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="form2Example1">Name</label>
-                                <@spring.formInput "companyDto.name" 'id="form3Example0cg" class="form-control form-control-lg"' />
+                                <@spring.formInput "userDto.name" 'id="form3Example0cg" class="form-control form-control-lg"' />
                                 <@spring.showErrors "<br>" "error text-danger" />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="form2Example1">Email address</label>
-                                <@spring.formInput "companyDto.email" 'id="form3Example3cg" class="form-control form-control-lg"' />
+                                <@spring.formInput "userDto.email" 'id="form3Example3cg" class="form-control form-control-lg"' />
                                 <@spring.showErrors "<br>" "error text-danger" />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="form2Example2">Password</label>
-                                <@spring.formInput "companyDto.password" 'id="form3Example4cg" class="form-control form-control-lg"''password' />
+                                <@spring.formInput "userDto.password" 'id="form3Example4cg" class="form-control form-control-lg"''password' />
                                 <@spring.showErrors "<br>" "error text-danger" />
                             </div>
+                            <input type="hidden" name="userDto.authority" value="COMPANY">
 
 
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
