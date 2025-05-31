@@ -143,16 +143,10 @@
         <@spring.formInput "searchDto.toCity" 'id="destination" class="form-control form-control-lg"' />
         <@spring.showErrors "<br>" "error text-danger" />
     </div>
-
     <div class="search-group">
-        <label for="departureTime">Departure Time</label>
-        <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" required>
+    <label for="datetimeRange">Departure & Arrival</label>
+    <input id="datetimeRange" name="datetimeRange" class="form-control" placeholder="Select date & time range" required>
     </div>
-    <div class="search-group">
-        <label for="arrivalTime">Arrival Time</label>
-        <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" required>
-    </div>
-
     <div class="search-group">
         <label for="ticketsClass">Passengers / Class</label>
         <select id="ticketsClass" name="ticketClass">
@@ -176,7 +170,7 @@
                         <p><strong>To:</strong> ${ticket.flight.toCity}</p>
                         <p><strong>Departure:</strong> ${ticket.flight.departureTime}</p>
                         <p><strong>Arrival:</strong> ${ticket.flight.arrivalTime}</p>
-<#--                        <p><strong>Class:</strong> ${ticket.ticketClassName}</p>-->
+                        <p><strong>Class:</strong> ${ticket.ticketClass}</p>
                     </div>
                     <div class="flight-price">
                         $${ticket.price}
@@ -189,7 +183,8 @@
                         data-to-city="${ticket.flight.toCity}"
                         data-departure="${ticket.flight.departureTime}"
                         data-arrival="${ticket.flight.arrivalTime}"
-                        data-price="${ticket.price}">
+                        data-price="${ticket.price}"
+                        data-ticket-class="${ticket.ticketClass}">
                     Book Now
                 </button>
             </div>
@@ -221,6 +216,7 @@
                         <p><strong>To:</strong> <span id="modalToCity"></span></p>
                         <p><strong>Departure:</strong> <span id="modalDeparture"></span></p>
                         <p><strong>Arrival:</strong> <span id="modalArrival"></span></p>
+                        <p><strong>Class:</strong> <span id="modalTicketClass"></span></p>
                         <p><strong>Price:</strong> $<span id="modalPrice"></span></p>
                     </div>
                 </form>
@@ -234,6 +230,14 @@
 </div>
 
 <script>
+        flatpickr("#datetimeRange", {
+        mode: "range",
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        minDate: "today"
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
         const bookingForm = document.getElementById('bookingForm');
@@ -247,15 +251,16 @@
                 const departure = this.dataset.departure;
                 const arrival = this.dataset.arrival;
                 const price = this.dataset.price;
+                const ticketClass = this.dataset.ticketClass;
 
                 document.getElementById('ticketId').value = ticketId;
-                console.log(document.getElementById('ticketId').value )
                 document.getElementById('modalFlightNumber').textContent = flightNumber;
                 document.getElementById('modalFromCity').textContent = fromCity;
                 document.getElementById('modalToCity').textContent = toCity;
                 document.getElementById('modalDeparture').textContent = departure;
                 document.getElementById('modalArrival').textContent = arrival;
                 document.getElementById('modalPrice').textContent = price;
+                document.getElementById('modalTicketClass').textContent = ticketClass;
 
                 bookingModal.show();
             });

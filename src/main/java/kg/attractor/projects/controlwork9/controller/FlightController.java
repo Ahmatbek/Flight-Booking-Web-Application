@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -33,6 +35,11 @@ public class FlightController {
                          BindingResult bindingResult,
                          Model model) {
         if(!bindingResult.hasErrors()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String[] times = searchDto.getDatetimeRange().split(" to ");
+            searchDto.setDepartureTime(LocalDateTime.parse(times[0], formatter));
+            searchDto.setArrivalTime(LocalDateTime.parse(times[1], formatter));
+
             List<FlightDto> flights = flightService.showTickets(searchDto);
             model.addAttribute("tickets", ticketService.getFreeTickets(flights, searchDto.getTicketClass()));
         }

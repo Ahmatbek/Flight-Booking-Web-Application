@@ -20,13 +20,12 @@ public class SearchDto {
     @NotBlank(message = "Destination city is required")
     private String toCity;
     
-    @NotNull(message = "Departure time is required")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime departureTime;
-    @NotNull(message = "Arrival time is required")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime arrivalTime;
     
     @NotBlank(message = "Ticket class is required")
     private String ticketClass;
+
+    @NotBlank
+    private String datetimeRange;
 }
