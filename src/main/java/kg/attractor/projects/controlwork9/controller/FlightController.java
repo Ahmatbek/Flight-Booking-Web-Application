@@ -9,6 +9,7 @@ import kg.attractor.projects.controlwork9.model.Flight;
 import kg.attractor.projects.controlwork9.service.FlightService;
 import kg.attractor.projects.controlwork9.service.TicketService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,6 +85,11 @@ public class FlightController {
         String[] times = searchDto.getDatetimeRange().split(" to ");
         searchDto.setDepartureTime(LocalDateTime.parse(times[0], formatter));
         searchDto.setArrivalTime(LocalDateTime.parse(times[1], formatter));
+    }
+
+    @GetMapping("destinations")
+    public ResponseEntity<?> destinations() {
+        return ResponseEntity.ofNullable(flightService.allCities());
     }
 
 }

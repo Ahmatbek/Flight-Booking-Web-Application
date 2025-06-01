@@ -125,6 +125,40 @@
         background-color: #f8f9fa;
         border-top: 1px solid #dee2e6;
     }
+
+
+    .autocomplete-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        max-height: 180px;
+        overflow-y: auto;
+        width: 100%;
+        z-index: 1000;
+        cursor: pointer;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    .autocomplete-suggestions {
+        display: none;
+    }
+
+
+    .autocomplete-suggestion {
+        padding: 8px 12px;
+    }
+
+    .autocomplete-suggestion:hover {
+        background-color: #ff6600;
+        color: white;
+    }
+
+
+
 </style>
 
 <form action="/flights/search" method="get" class="search-bar">
@@ -132,17 +166,19 @@
         <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                value="${(_csrf.token)!'csrf-token'}"/>
     </#if>
-    <div class="search-group">
+    <div class="search-group" style="position: relative;">
         <label for="departure">Departure</label>
-        <@spring.formInput "searchDto.fromCity" 'id="departure" class="form-control form-control-lg"' />
-        <@spring.showErrors "<br>" "error text-danger" />
+        <input type="text" id="departure" name="fromCity" class="form-control form-control-lg" autocomplete="off"/>
+        <div id="departureSuggestions" class="autocomplete-suggestions"></div>
     </div>
 
-    <div class="search-group">
+
+    <div class="search-group" style="position: relative;">
         <label for="destination">Destination</label>
-        <@spring.formInput "searchDto.toCity" 'id="destination" class="form-control form-control-lg"' />
-        <@spring.showErrors "<br>" "error text-danger" />
+        <input type="text" id="destination" name="toCity" class="form-control form-control-lg" autocomplete="off"/>
+        <div id="destinationSuggestions" class="autocomplete-suggestions"></div>
     </div>
+
     <div class="search-group">
     <label for="datetimeRange">Departure & Arrival</label>
     <input id="datetimeRange" name="datetimeRange" class="form-control" placeholder="Select date & time range" required>
@@ -303,6 +339,82 @@
             window.location.href = `/booking/`+ticketId;
         });
     });
+
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const departureInput = document.getElementById('departure');
+        const destinationInput = document.getElementById('destination');
+        const departureSuggestions = document.getElementById('departureSuggestions');
+        const destinationSuggestions = document.getElementById('destinationSuggestions');
+
+        let citiesCache = null;
+
+        async function fetchCities() {
+            if (citiesCache) return citiesCache;
+            try {
+                const response = await fetch('/destinations');
+                if (response.ok) {
+                    citiesCache = await response.json();
+                    return citiesCache;
+                }
+            } catch (e) {
+                console.error('Failed to fetch cities', e);
+            }
+            return [];
+        }
+
+        function filterCities(inputVal, cities) {
+            const val = inputVal.trim().toLowerCase();
+            if (!val) return [];
+            return cities.filter(city => city.toLowerCase().includes(val));
+        }
+
+        function renderSuggestions(container, suggestions, inputElem) {
+            container.innerHTML = '';
+            if (suggestions.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            suggestions.forEach(city => {
+                const div = document.createElement('div');
+                div.classList.add('autocomplete-suggestion');
+                div.textContent = city;
+                div.addEventListener('click', () => {
+                    inputElem.value = city;
+                    container.style.display = 'none';
+                });
+                container.appendChild(div);
+            });
+            container.style.display = 'block';
+        }
+
+        function setupAutocomplete(inputElem, suggestionContainer) {
+            inputElem.addEventListener('input', async () => {
+                const cities = await fetchCities();
+                const matches = filterCities(inputElem.value, cities);
+                renderSuggestions(suggestionContainer, matches, inputElem);
+            });
+
+            inputElem.addEventListener('blur', () => {
+                setTimeout(() => {
+                    suggestionContainer.style.display = 'none';
+                }, 150);
+            });
+
+            inputElem.addEventListener('focus', async () => {
+                if (inputElem.value.trim() === '') return;
+                const cities = await fetchCities();
+                const matches = filterCities(inputElem.value, cities);
+                renderSuggestions(suggestionContainer, matches, inputElem);
+            });
+        }
+
+        setupAutocomplete(departureInput, departureSuggestions);
+        setupAutocomplete(destinationInput, destinationSuggestions);
+    });
+
 </script>
 
 </@main.layout>

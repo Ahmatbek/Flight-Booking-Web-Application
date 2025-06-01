@@ -14,4 +14,5 @@ public interface FlightService {
     Boolean checkNumberInDB(String email);
 
     List<FlightDto> findByUserId(Long userId);
+    List<String> allCities();
 }

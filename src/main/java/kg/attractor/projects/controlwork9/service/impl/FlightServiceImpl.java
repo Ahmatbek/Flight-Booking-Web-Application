@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +81,16 @@ public class FlightServiceImpl implements FlightService {
                 .stream()
                 .map(flightMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public List<String> allCities() {
+         return Stream.concat(
+                flightRepository.findAll().stream().map(Flight::getFromCity),
+                flightRepository.findAll().stream().map(Flight::getToCity)
+        )
+                 .distinct()
+                 .toList();
     }
 
     private FlightDto flightDto(SearchDto searchDto) {
