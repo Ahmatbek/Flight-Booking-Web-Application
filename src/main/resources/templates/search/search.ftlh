@@ -127,7 +127,7 @@
     }
 </style>
 
-<form action="/flights/search" method="post" class="search-bar">
+<form action="/flights/search" method="get" class="search-bar">
     <#if _csrf??>
         <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                value="${(_csrf.token)!'csrf-token'}"/>
@@ -157,44 +157,65 @@
 
     <button type="submit">🔍</button>
 </form>
-
-<#if tickets?? && tickets?size gt 0>
-    <div class="results-section">
-        <h2>Available Flights</h2>
-        <#list tickets as ticket>
-            <div class="flight-card" data-ticket-id="${ticket.id}">
-                <h3>Flight ${ticket.flight.number}</h3>
-                <div class="flight-details">
-                    <div class="flight-info">
-                        <p><strong>From:</strong> ${ticket.flight.fromCity}</p>
-                        <p><strong>To:</strong> ${ticket.flight.toCity}</p>
-                        <p><strong>Departure:</strong> ${ticket.flight.departureTime}</p>
-                        <p><strong>Arrival:</strong> ${ticket.flight.arrivalTime}</p>
-                        <p><strong>Class:</strong> ${ticket.ticketClass}</p>
+    <#if tickets?? && tickets.items?size gt 0>
+        <div class="results-section">
+            <h2>Available Flights</h2>
+            <#list tickets.items as ticket>
+                <div class="flight-card" data-ticket-id="${ticket.id}">
+                    <h3>Flight ${ticket.flight.number}</h3>
+                    <div class="flight-details">
+                        <div class="flight-info">
+                            <p><strong>From:</strong> ${ticket.flight.fromCity}</p>
+                            <p><strong>To:</strong> ${ticket.flight.toCity}</p>
+                            <p><strong>Departure:</strong> ${ticket.flight.departureTime}</p>
+                            <p><strong>Arrival:</strong> ${ticket.flight.arrivalTime}</p>
+                            <p><strong>Class:</strong> ${ticket.ticketClass}</p>
+                        </div>
+                        <div class="flight-price">
+                            $${ticket.price}
+                        </div>
                     </div>
-                    <div class="flight-price">
-                        $${ticket.price}
-                    </div>
+                    <button class="book-button"
+                            data-ticket-id="${ticket.id}"
+                            data-flight-number="${ticket.flight.number}"
+                            data-from-city="${ticket.flight.fromCity}"
+                            data-to-city="${ticket.flight.toCity}"
+                            data-departure="${ticket.flight.departureTime}"
+                            data-arrival="${ticket.flight.arrivalTime}"
+                            data-price="${ticket.price}"
+                            data-ticket-class="${ticket.ticketClass}">
+                        Book Now
+                    </button>
                 </div>
-                <button class="book-button" 
-                        data-ticket-id="${ticket.id}"
-                        data-flight-number="${ticket.flight.number}"
-                        data-from-city="${ticket.flight.fromCity}"
-                        data-to-city="${ticket.flight.toCity}"
-                        data-departure="${ticket.flight.departureTime}"
-                        data-arrival="${ticket.flight.arrivalTime}"
-                        data-price="${ticket.price}"
-                        data-ticket-class="${ticket.ticketClass}">
-                    Book Now
-                </button>
-            </div>
-        </#list>
-    </div>
-<#elseif tickets??>
-    <div class="results-section">
-        <p>No flights found matching your criteria.</p>
-    </div>
-</#if>
+            </#list>
+
+            <#if tickets?? && tickets.totalPages?? && tickets.totalPages gt 1>
+                <nav class="pagination mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <#if !tickets.hasPreviousPage>disabled</#if>">
+                            <a class="page-link" href="?page=${(tickets.page!0) - 1}&fromCity=${searchDto.fromCity!''}&toCity=${searchDto.toCity!''}&datetimeRange=${searchDto.datetimeRange!''}&ticketClass=${searchDto.ticketClass!''}">&laquo; Prev</a>
+                        </li>
+
+                        <#list 1..tickets.totalPages as pageNum>
+                            <li class="page-item <#if (tickets.page!0) == pageNum - 1>active</#if>">
+                                <a class="page-link" href="?page=${pageNum - 1}&fromCity=${searchDto.fromCity!''}&toCity=${searchDto.toCity!''}&datetimeRange=${searchDto.datetimeRange!''}&ticketClass=${searchDto.ticketClass!''}">${pageNum}</a>
+                            </li>
+                        </#list>
+                        <li class="page-item <#if !tickets.hasNextPage>disabled</#if>">
+                            <a class="page-link" href="?page=${(tickets.page!0) + 1}&fromCity=${searchDto.fromCity!''}&toCity=${searchDto.toCity!''}&datetimeRange=${searchDto.datetimeRange!''}&ticketClass=${searchDto.ticketClass!''}">Next &raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </#if>
+
+
+        </div>
+    <#elseif tickets??>
+        <div class="results-section">
+            <p>No flights found matching your criteria.</p>
+        </div>
+    </#if>
+
 
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -230,12 +251,23 @@
 </div>
 
 <script>
-        flatpickr("#datetimeRange", {
+    const dateRangeInput = document.getElementById('datetimeRange');
+
+    flatpickr(dateRangeInput, {
         mode: "range",
         enableTime: true,
         dateFormat: "Y-m-d H:i",
         time_24hr: true,
         minDate: "today"
+    });
+
+    document.querySelector('.search-bar').addEventListener('submit', function (event) {
+        const selectedDates = dateRangeInput.value.split(" to ");
+        if (selectedDates.length !== 2 || !selectedDates[0] || !selectedDates[1]) {
+            event.preventDefault();
+            alert("Please select both departure and arrival date & time.");
+            return false;
+        }
     });
 
     document.addEventListener('DOMContentLoaded', function() {

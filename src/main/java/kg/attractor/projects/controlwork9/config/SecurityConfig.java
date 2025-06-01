@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/admin/tickets/*").hasAuthority("COMPANY")
+                        .requestMatchers("/admin/tickets/*").hasAnyAuthority("COMPANY","ADMIN")
                         .requestMatchers("/users/profile").fullyAuthenticated()
                         .requestMatchers("/company/*").hasAuthority("COMPANY")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
