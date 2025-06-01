@@ -48,6 +48,7 @@ public class FlightServiceImpl implements FlightService {
         );
 
         return flights.stream()
+                .filter(e->e.getCompany().getEnabled()!=Boolean.FALSE)
                 .map(flight -> FlightDto.builder()
                         .id(flight.getId())
                         .number(flight.getNumber())

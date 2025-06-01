@@ -31,7 +31,7 @@ public class FlightController {
         return "search/search";
     }
     @PostMapping("/flights/search")
-    public String handleSearchPost(@Valid SearchDto searchDto,
+    public String searchPost(@Valid SearchDto searchDto,
                                    BindingResult bindingResult,
                                    @RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "5") int size,
@@ -40,7 +40,7 @@ public class FlightController {
     }
 
     @GetMapping("/flights/search")
-    public String handleSearchGet(@Valid SearchDto searchDto,
+    public String searchGet(@Valid SearchDto searchDto,
                                   BindingResult bindingResult,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "5") int size,
